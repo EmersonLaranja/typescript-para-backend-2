@@ -3,15 +3,15 @@ import AdotanteEntity from "../entities/AdotanteEntity";
 import AdotanteRepository from "../repositories/AdotanteRepository";
 import EnderecoEntity from "../entities/Endereco";
 import type {
-  TipoRequestAdotante,
-  TipoResponseAdotante,
+  TipoRequestBodyAdotante,
+  TipoResponseBodyAdotante,
 } from "../tipos/TiposAdotante";
 
 export default class AdotanteController {
   constructor(private repository: AdotanteRepository) {}
   async criaAdotante(
-    req: Request<{}, {}, TipoRequestAdotante>,
-    res: Response<TipoResponseAdotante>
+    req: Request<{}, {}, TipoRequestBodyAdotante>,
+    res: Response<TipoResponseBodyAdotante>
   ) {
     const { nome, celular, endereco, foto, senha } = req.body;
     const novoAdotante = new AdotanteEntity(

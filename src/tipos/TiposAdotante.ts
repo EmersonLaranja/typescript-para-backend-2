@@ -1,8 +1,8 @@
 import AdotanteEntity from "../entities/AdotanteEntity";
 
-type TipoRequestAdotante = Omit<AdotanteEntity, "id">;
+type TipoRequestBodyAdotante = Omit<AdotanteEntity, "id">;
 
-type TipoResponseAdotante = {
+type TipoResponseBodyAdotante = {
   data?: Pick<AdotanteEntity, "nome" | "celular">;
 
   error?: {
@@ -10,4 +10,4 @@ type TipoResponseAdotante = {
   };
 };
 
-export { TipoRequestAdotante, TipoResponseAdotante };
+export { TipoRequestBodyAdotante, TipoResponseBodyAdotante };
