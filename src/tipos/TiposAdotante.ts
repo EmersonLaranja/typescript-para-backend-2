@@ -1,16 +1,21 @@
 import AdotanteEntity from "../entities/AdotanteEntity";
-import {
-  TipoRequestBody,
-  TipoRequestParams,
-  TipoResponseBody,
-} from "./TiposHttp";
 
-type AdotanteKeys = "id" | "nome" | "celular";
+type TipoRequestBodyAdotante = Omit<AdotanteEntity, "id">;
 
-export type TipoRequestBodyAdotante = TipoRequestBody<AdotanteEntity>;
-export type TipoResponseBodyAdotante = TipoResponseBody<
-  AdotanteEntity,
-  AdotanteKeys
->;
+type TipoResponseBodyAdotante = {
+  data?:
+    | Pick<AdotanteEntity, "id" | "nome" | "celular">
+    | Pick<AdotanteEntity, "id" | "nome" | "celular">[];
 
-export type TipoRequestParamsAdotante = TipoRequestParams;
+  error?: unknown;
+};
+
+type TipoRequestParamsAdotante = {
+  id?: string;
+};
+
+export {
+  TipoRequestBodyAdotante,
+  TipoRequestParamsAdotante,
+  TipoResponseBodyAdotante,
+};
