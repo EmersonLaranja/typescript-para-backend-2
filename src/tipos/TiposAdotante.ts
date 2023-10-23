@@ -5,9 +5,15 @@ type TipoRequestBodyAdotante = Omit<AdotanteEntity, "id">;
 type TipoResponseBodyAdotante = {
   data?: Pick<AdotanteEntity, "nome" | "celular">;
 
-  error?: {
-    mensagem: string;
-  };
+  error?: unknown;
 };
 
-export { TipoRequestBodyAdotante, TipoResponseBodyAdotante };
+type TipoRequestParamsAdotante = {
+  id: string;
+};
+
+export {
+  TipoRequestBodyAdotante,
+  TipoRequestParamsAdotante,
+  TipoResponseBodyAdotante,
+};
