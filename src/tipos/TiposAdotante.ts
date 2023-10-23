@@ -1,21 +1,17 @@
 import AdotanteEntity from "../entities/AdotanteEntity";
+import {
+  TipoRequestBody,
+  TipoRequestParams,
+  TipoResponseBody,
+} from "./TiposHttp";
 
-type TipoRequestBodyAdotante = Omit<AdotanteEntity, "id">;
+type AdotanteKeys = "id" | "nome" | "celular";
 
-type TipoResponseBodyAdotante = {
-  data?:
-    | Pick<AdotanteEntity, "id" | "nome" | "celular">
-    | Pick<AdotanteEntity, "id" | "nome" | "celular">[];
+// // Exemplo de uso para AdotanteEntity
+export type TipoRequestBodyAdotante = TipoRequestBody<AdotanteEntity>;
+export type TipoResponseBodyAdotante = TipoResponseBody<
+  AdotanteEntity,
+  AdotanteKeys
+>;
 
-  error?: unknown;
-};
-
-type TipoRequestParamsAdotante = {
-  id?: string;
-};
-
-export {
-  TipoRequestBodyAdotante,
-  TipoRequestParamsAdotante,
-  TipoResponseBodyAdotante,
-};
+export type TipoRequestParamsAdotante = TipoRequestParams;
