@@ -6,6 +6,7 @@ import type {
   TipoRequestAdotante,
   TipoResponseAdotante,
 } from "../tipos/TiposAdotante";
+
 export default class AdotanteController {
   constructor(private repository: AdotanteRepository) {}
   async criaAdotante(

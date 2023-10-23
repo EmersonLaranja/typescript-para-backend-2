@@ -1,18 +1,10 @@
-import EnderecoEntity from "../entities/Endereco";
+import AdotanteEntity from "../entities/AdotanteEntity";
 
-type TipoRequestAdotante = {
-  nome: string;
-  celular: string;
-  senha: string;
-  endereco?: EnderecoEntity;
-  foto?: string;
-};
+type TipoRequestAdotante = Omit<AdotanteEntity, "id">;
 
 type TipoResponseAdotante = {
-  data: {
-    nome: string;
-    celular: string;
-  };
+  data: Pick<AdotanteEntity, "nome" | "celular">;
+
   error?: {
     mensagem: string;
   };
