@@ -1,22 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import AdotanteEntity from "../entities/AdotanteEntity";
 import AdotanteRepository from "../repositories/AdotanteRepository";
 import EnderecoEntity from "../entities/Endereco";
-import * as yup from "yup";
 import type {
   TipoRequestBodyAdotante,
   TipoRequestParamsAdotante,
   TipoResponseBodyAdotante,
 } from "../tipos/TiposAdotante";
-
-const adotanteBodyValidator: yup.ObjectSchema<
-  Omit<TipoRequestBodyAdotante, "endereco">
-> = yup.object({
-  nome: yup.string().defined().required(),
-  celular: yup.string().defined(),
-  foto: yup.string().optional(),
-  senha: yup.string().defined().min(6).required(),
-});
 
 export default class AdotanteController {
   constructor(private repository: AdotanteRepository) {}
@@ -24,21 +14,9 @@ export default class AdotanteController {
     req: Request<TipoRequestParamsAdotante, {}, TipoRequestBodyAdotante>,
     res: Response<TipoResponseBodyAdotante>
   ) {
-    let bodyValidated: TipoRequestBodyAdotante ;
-    try {
-      bodyValidated = await adotanteBodyValidator.validate(req.body,{abortEarly:false});
-    } catch (error) {
-      const yupErrors = error as yup.ValidationError;
-      
-      const validationErrors:Record<string,string>={}
-      yupErrors.inner.forEach(error=>{
-        if(!error.path) return;
-        validationErrors[error.path]=error.message
-      })
-      return res.status(400).json({ error: validationErrors });
-    }
+    let bodyValidated: TipoRequestBodyAdotante;
 
-    const { nome, celular, endereco, foto, senha } = bodyValidated;
+    const { nome, celular, endereco, foto, senha } = req.body;
     const novoAdotante = new AdotanteEntity(
       nome,
       senha,
@@ -100,6 +78,7 @@ export default class AdotanteController {
     return res.sendStatus(204);
   }
 
+  //adicionar a validação de um endereço (middleware) de um endereço
   async atualizaEnderecoAdotante(
     req: Request<TipoRequestParamsAdotante, {}, TipoRequestBodyAdotante>,
     res: Response<TipoResponseBodyAdotante>
