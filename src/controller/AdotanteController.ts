@@ -29,7 +29,13 @@ export default class AdotanteController {
       bodyValidated = await adotanteBodyValidator.validate(req.body,{abortEarly:false});
     } catch (error) {
       const yupErrors = error as yup.ValidationError;
-      return res.status(400).json({ error: yupErrors.message });
+      
+      const validationErrors:Record<string,string>={}
+      yupErrors.inner.forEach(error=>{
+        if(!error.path) return;
+        validationErrors[error.path]=error.message
+      })
+      return res.status(400).json({ error: validationErrors });
     }
 
     const { nome, celular, endereco, foto, senha } = bodyValidated;
