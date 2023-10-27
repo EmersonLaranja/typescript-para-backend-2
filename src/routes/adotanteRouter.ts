@@ -2,7 +2,7 @@ import express from "express";
 import { AppDataSource } from "../config/dataSource";
 import AdotanteController from "../controller/AdotanteController";
 import AdotanteRepository from "../repositories/AdotanteRepository";
-import { adotanteBodyValidatorMiddleware } from "../middlewares/validationMiddlewares";
+import { adotanteBodyValidatorMiddleware } from "../middleware/validationMiddleware";
 import { RequestHandler } from "express-serve-static-core";
 const router = express.Router();
 const adotanteRepository = new AdotanteRepository(
