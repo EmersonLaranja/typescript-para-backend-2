@@ -29,7 +29,7 @@ export default class AdotanteController {
       bodyValidated = await adotanteBodyValidator.validate(req.body);
     } catch (error) {
       const validatitonErrror = error as yup.ValidationError;
-      return res.json({ error: validatitonErrror.message });
+      return res.status(400).json({ error: validatitonErrror.message });
     }
 
     const { nome, celular, endereco, foto, senha } = bodyValidated;
