@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import AdotanteEntity from "../entities/AdotanteEntity";
-import AdotanteRepository from "../repositories/AdotanteRepository";
 import EnderecoEntity from "../entities/Endereco";
+import AdotanteRepository from "../repositories/AdotanteRepository";
 import type {
   TipoRequestBodyAdotante,
   TipoRequestParamsAdotante,
@@ -14,8 +14,6 @@ export default class AdotanteController {
     req: Request<TipoRequestParamsAdotante, {}, TipoRequestBodyAdotante>,
     res: Response<TipoResponseBodyAdotante>
   ) {
-    let bodyValidated: TipoRequestBodyAdotante;
-
     const { nome, celular, endereco, foto, senha } = req.body;
     const novoAdotante = new AdotanteEntity(
       nome,
