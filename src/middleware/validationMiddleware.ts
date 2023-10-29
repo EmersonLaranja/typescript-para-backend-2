@@ -1,6 +1,7 @@
 import * as yup from "yup";
 import { TipoRequestBodyAdotante } from "../tipos/TiposAdotante";
 import { NextFunction, Request, Response } from "express";
+import EnderecoEntity from "../entities/Endereco";
 
 const adotanteBodyValidator: yup.ObjectSchema<
   Omit<TipoRequestBodyAdotante, "endereco">
@@ -10,6 +11,12 @@ const adotanteBodyValidator: yup.ObjectSchema<
   foto: yup.string().optional(),
   senha: yup.string().defined().min(6).required(),
 });
+
+const enderecoBodyValidator: yup.ObjectSchema<Omit<EnderecoEntity, "id">> =
+  yup.object({
+    cidade: yup.string().defined().required(),
+    estado: yup.string().defined().required().max(20),
+  });
 
 const adotanteBodyValidatorMiddleware = async (
   req: Request,
@@ -31,4 +38,24 @@ const adotanteBodyValidatorMiddleware = async (
   }
 };
 
-export { adotanteBodyValidatorMiddleware };
+const enderecoBodyValidatorMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await enderecoBodyValidator.validate(req.body, { abortEarly: false });
+    return next();
+  } catch (error) {
+    const yupErrors = error as yup.ValidationError;
+
+    const validationErrors: Record<string, string> = {};
+    yupErrors.inner.forEach((error) => {
+      if (!error.path) return;
+      validationErrors[error.path] = error.message;
+    });
+    return res.status(400).json({ error: validationErrors });
+  }
+};
+
+export { adotanteBodyValidatorMiddleware, enderecoBodyValidatorMiddleware };
