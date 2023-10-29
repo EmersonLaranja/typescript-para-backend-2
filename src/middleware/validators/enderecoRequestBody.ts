@@ -4,11 +4,12 @@ import EnderecoEntity from "../../entities/Endereco";
 import { NextFunction, Request, Response } from "express";
 yup.setLocale(pt);
 
-const enderecoBodyValidator: yup.ObjectSchema<Omit<EnderecoEntity, "id">> =
-  yup.object({
-    cidade: yup.string().defined().required(),
-    estado: yup.string().defined().required().max(20),
-  });
+export const enderecoBodyValidator: yup.ObjectSchema<
+  Omit<EnderecoEntity, "id">
+> = yup.object({
+  cidade: yup.string().defined().required(),
+  estado: yup.string().defined().required().max(20),
+});
 
 export const enderecoBodyValidatorMiddleware = async (
   req: Request,

@@ -2,11 +2,9 @@ import express from "express";
 import { AppDataSource } from "../config/dataSource";
 import AdotanteController from "../controller/AdotanteController";
 import AdotanteRepository from "../repositories/AdotanteRepository";
-import {
-  adotanteBodyValidatorMiddleware,
-  enderecoBodyValidatorMiddleware,
-} from "../middleware/validators/adotanteRequestBody";
+import { adotanteBodyValidatorMiddleware } from "../middleware/validators/adotanteRequestBody";
 import { RequestHandler } from "express-serve-static-core";
+import { enderecoBodyValidatorMiddleware } from "../middleware/validators/enderecoRequestBody";
 const router = express.Router();
 const adotanteRepository = new AdotanteRepository(
   AppDataSource.getRepository("AdotanteEntity")

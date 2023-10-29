@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { TipoRequestBodyAdotante } from "../../tipos/TiposAdotante";
 import * as yup from "yup";
 import { pt } from "yup-locale-pt";
+import crypto from "crypto";
+import AdotanteEntity from "../../entities/AdotanteEntity";
+
 yup.setLocale(pt);
 const adotanteBodyValidator: yup.ObjectSchema<
   Omit<TipoRequestBodyAdotante, "endereco">
@@ -12,20 +15,29 @@ const adotanteBodyValidator: yup.ObjectSchema<
     .defined()
     .matches(
       /^(\(?[0-9]{2}\)?)? ?([0-9]{4,5})-?([0-9]{4})$/gm,
-      "Celular inválido"
+      "celular inválido"
     )
     .required(),
   foto: yup.string().optional(),
-  senha: yup.string().defined().min(6).required(),
+  senha: yup
+    .string()
+    .defined()
+    .required()
+    .matches(
+      /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/gm,
+      "senha inválida"
+    ),
 });
 
 export const adotanteBodyValidatorMiddleware = async (
-  req: Request,
+  req: Request<{}, {}, Partial<AdotanteEntity>>,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    await adotanteBodyValidator.validate(req.body, { abortEarly: false });
+    await adotanteBodyValidator.validate(req.body, {
+      abortEarly: false,
+    });
     return next();
   } catch (erros) {
     const yupErrors = erros as yup.ValidationError;
