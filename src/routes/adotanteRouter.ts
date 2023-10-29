@@ -5,7 +5,7 @@ import AdotanteRepository from "../repositories/AdotanteRepository";
 import {
   adotanteBodyValidatorMiddleware,
   enderecoBodyValidatorMiddleware,
-} from "../middleware/requestBodyValidators";
+} from "../middleware/validators/adotanteRequestBody";
 import { RequestHandler } from "express-serve-static-core";
 const router = express.Router();
 const adotanteRepository = new AdotanteRepository(
