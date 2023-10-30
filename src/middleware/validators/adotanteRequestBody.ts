@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { TipoRequestBodyAdotante } from "../../tipos/TiposAdotante";
+import { TipoRequestBodyAdotante } from "../../tipos/tiposAdotante";
 import * as yup from "yup";
 import { pt } from "yup-locale-pt";
 import crypto from "crypto";

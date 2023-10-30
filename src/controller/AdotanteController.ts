@@ -6,7 +6,7 @@ import type {
   TipoRequestBodyAdotante,
   TipoRequestParamsAdotante,
   TipoResponseBodyAdotante,
-} from "../tipos/TiposAdotante";
+} from "../tipos/tiposAdotante";
 
 export default class AdotanteController {
   constructor(private repository: AdotanteRepository) {}

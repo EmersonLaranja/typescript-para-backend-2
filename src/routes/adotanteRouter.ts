@@ -1,9 +1,8 @@
-import express from "express";
+import express, { RequestHandler } from "express";
 import { AppDataSource } from "../config/dataSource";
 import AdotanteController from "../controller/AdotanteController";
 import AdotanteRepository from "../repositories/AdotanteRepository";
 import { adotanteBodyValidatorMiddleware } from "../middleware/validators/adotanteRequestBody";
-import { RequestHandler } from "express-serve-static-core";
 import { enderecoBodyValidatorMiddleware } from "../middleware/validators/enderecoRequestBody";
 const router = express.Router();
 const adotanteRepository = new AdotanteRepository(
