@@ -1,7 +1,8 @@
 import express from "express";
-import router from "./routes";
 import "reflect-metadata";
 import { AppDataSource } from "./config/dataSource";
+import { erroMiddleware } from "./middleware/erro";
+import router from "./routes";
 
 const app = express();
 app.use(express.json());
@@ -14,5 +15,7 @@ AppDataSource.initialize()
   .catch((erro) => {
     console.log(erro);
   });
+
+app.use(erroMiddleware);
 
 export default app;

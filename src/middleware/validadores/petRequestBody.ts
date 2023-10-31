@@ -5,6 +5,7 @@ import PetEntity from "../../entities/PetEntity";
 import EnumEspecie from "../../enum/EnumEspecie";
 import EnumPorte from "../../enum/EnumPorte";
 import { TipoRequestBodyPet } from "../../tipos/tiposPet";
+import tratarErroValidacaoYup from "../../utils/tratarValidacaoYup";
 yup.setLocale(pt);
 
 const petBodyValidator: yup.ObjectSchema<Omit<TipoRequestBodyPet, "adotante">> =
@@ -25,19 +26,5 @@ export const petBodyValidatorMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    await petBodyValidator.validate(req.body, {
-      abortEarly: false,
-    });
-    return next();
-  } catch (erros) {
-    const yupErrors = erros as yup.ValidationError;
-
-    const validationErrors: Record<string, string> = {};
-    yupErrors.inner.forEach((erros) => {
-      if (!erros.path) return;
-      validationErrors[erros.path] = erros.message;
-    });
-    return res.status(400).json({ erros: validationErrors });
-  }
+  tratarErroValidacaoYup(petBodyValidator, req, res, next);
 };

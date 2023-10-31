@@ -2,7 +2,7 @@ import express, { RequestHandler } from "express";
 import PetController from "../controller/PetController";
 import PetRepository from "../repositories/PetRepository";
 import { AppDataSource } from "../config/dataSource";
-import { petBodyValidatorMiddleware } from "../middleware/validators/petRequestBody";
+import { petBodyValidatorMiddleware } from "../middleware/validadores/petRequestBody";
 const router = express.Router();
 const petRepository = new PetRepository(
   AppDataSource.getRepository("PetEntity"),

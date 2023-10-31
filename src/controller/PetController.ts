@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
-import EnumEspecie from "../enum/EnumEspecie";
-import EnumPorte from "../enum/EnumPorte";
-import PetRepository from "../repositories/PetRepository";
 import PetEntity from "../entities/PetEntity";
+import PetRepository from "../repositories/PetRepository";
 import {
   TipoRequestBodyPet,
   TipoRequestParamsPet,
@@ -19,13 +17,6 @@ export default class PetController {
       req.body
     );
 
-    if (!Object.values(EnumEspecie).includes(especie)) {
-      return res.status(400).json({ erros: "Especie inválida" });
-    }
-
-    if (porte && !(porte in EnumPorte)) {
-      return res.status(400).json({ erros: "Porte inválido" });
-    }
     const novoPet = new PetEntity(
       nome,
       especie,
@@ -61,14 +52,8 @@ export default class PetController {
     res: Response<TipoResponseBodyPet>
   ) {
     const { id } = req.params;
-    const { success, message } = await this.repository.atualizaPet(
-      Number(id),
-      req.body as PetEntity
-    );
+    await this.repository.atualizaPet(Number(id), req.body as PetEntity);
 
-    if (!success) {
-      return res.status(404).json({ erros: { mensagem: message } });
-    }
     return res.sendStatus(204);
   }
 
@@ -78,11 +63,8 @@ export default class PetController {
   ) {
     const { id } = req.params;
 
-    const { success, message } = await this.repository.deletaPet(Number(id));
+    await this.repository.deletaPet(Number(id));
 
-    if (!success) {
-      return res.status(404).json({ erros: { mensagem: message } });
-    }
     return res.sendStatus(204);
   }
 
@@ -92,14 +74,8 @@ export default class PetController {
   ) {
     const { pet_id, adotante_id } = req.params;
 
-    const { success, message } = await this.repository.adotaPet(
-      Number(pet_id),
-      Number(adotante_id)
-    );
+    await this.repository.adotaPet(Number(pet_id), Number(adotante_id));
 
-    if (!success) {
-      return res.status(404).json({ erros: { mensagem: message } });
-    }
     return res.sendStatus(204);
   }
 

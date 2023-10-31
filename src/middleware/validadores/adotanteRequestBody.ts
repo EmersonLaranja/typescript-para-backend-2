@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { TipoRequestBodyAdotante } from "../../tipos/tiposAdotante";
 import * as yup from "yup";
 import { pt } from "yup-locale-pt";
-import crypto from "crypto";
 import AdotanteEntity from "../../entities/AdotanteEntity";
+import { TipoRequestBodyAdotante } from "../../tipos/tiposAdotante";
+import tratarErroValidacaoYup from "../../utils/tratarValidacaoYup";
 
 yup.setLocale(pt);
 const adotanteBodyValidator: yup.ObjectSchema<
@@ -34,19 +34,5 @@ export const adotanteBodyValidatorMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  try {
-    await adotanteBodyValidator.validate(req.body, {
-      abortEarly: false,
-    });
-    return next();
-  } catch (erros) {
-    const yupErrors = erros as yup.ValidationError;
-
-    const validationErrors: Record<string, string> = {};
-    yupErrors.inner.forEach((erros) => {
-      if (!erros.path) return;
-      validationErrors[erros.path] = erros.message;
-    });
-    return res.status(400).json({ erros: validationErrors });
-  }
+  tratarErroValidacaoYup(adotanteBodyValidator, req, res, next);
 };
