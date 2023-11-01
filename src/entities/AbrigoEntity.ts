@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -12,6 +14,7 @@ import AdotanteEntity from "./AdotanteEntity";
 import EnumPorte from "../enum/EnumPorte";
 import EnderecoEntity from "./Endereco";
 import PetEntity from "./PetEntity";
+import { criarSenhaCriptografada } from "../utils/senhaCriptografada";
 
 @Entity()
 export default class AbrigoEntity {
@@ -36,10 +39,24 @@ export default class AbrigoEntity {
   @OneToMany(() => PetEntity, (pet) => pet.abrigo)
   pets!: PetEntity[];
 
-  constructor(nome: string, celular: string, email: string, senha: string) {
+  constructor(
+    nome: string,
+    celular: string,
+    email: string,
+    senha: string,
+    endereco: EnderecoEntity
+  ) {
     this.nome = nome;
     this.celular = celular;
     this.email = email;
     this.senha = senha;
+    this.endereco = endereco;
+  }
+  @BeforeInsert()
+  @BeforeUpdate()
+  private async criptografarSenha() {
+    if (this.senha) {
+      this.senha = criarSenhaCriptografada(this.senha);
+    }
   }
 }
