@@ -1,9 +1,8 @@
 import { Repository } from "typeorm";
-import PetEntity from "../entities/PetEntity";
-import InterfacePetRepository from "./interfaces/InterfacePetRepository";
 import AdotanteEntity from "../entities/AdotanteEntity";
-import EnumPorte from "../enum/EnumPorte";
-import { NaoEncontrado, RequisicaoRuim } from "../utils/manipulaErros";
+import PetEntity from "../entities/PetEntity";
+import { NaoEncontrado } from "../utils/manipulaErros";
+import InterfacePetRepository from "./interfaces/InterfacePetRepository";
 
 export default class PetRepository implements InterfacePetRepository {
   private petRepository: Repository<PetEntity>;
@@ -17,16 +16,13 @@ export default class PetRepository implements InterfacePetRepository {
     this.adotanteRepository = adotanteRepository;
   }
 
-  async criaPet(pet: PetEntity): Promise<void> {
+  async criaPet(pet: PetEntity) {
     await this.petRepository.save(pet);
   }
   async listaPet(): Promise<PetEntity[]> {
     return await this.petRepository.find();
   }
-  async atualizaPet(
-    id: number,
-    newData: PetEntity
-  ): Promise<{ success: boolean; message?: string }> {
+  async atualizaPet(id: number, newData: PetEntity) {
     const petToUpdate = await this.petRepository.findOne({ where: { id } });
 
     if (!petToUpdate) {
@@ -36,11 +32,9 @@ export default class PetRepository implements InterfacePetRepository {
     Object.assign(petToUpdate, newData);
 
     await this.petRepository.save(petToUpdate);
-
-    return { success: true };
   }
 
-  async deletaPet(id: number): Promise<{ success: boolean; message?: string }> {
+  async deletaPet(id: number) {
     const petToRemove = await this.petRepository.findOne({ where: { id } });
 
     if (!petToRemove) {
@@ -48,14 +42,9 @@ export default class PetRepository implements InterfacePetRepository {
     }
 
     await this.petRepository.remove(petToRemove);
-
-    return { success: true };
   }
 
-  async adotaPet(
-    idPet: number,
-    idAdotante: number
-  ): Promise<{ success: boolean; message?: string }> {
+  async adotaPet(idPet: number, idAdotante: number) {
     const pet = await this.petRepository.findOne({ where: { id: idPet } });
     if (!pet) {
       throw new NaoEncontrado("Pet não encontrado");
@@ -65,13 +54,12 @@ export default class PetRepository implements InterfacePetRepository {
       where: { id: idAdotante },
     });
     if (!adotante) {
-      return { success: false, message: "Adotante não encontrado" };
+      throw new NaoEncontrado("Adotante não encontrado");
     }
 
     pet.adotante = adotante;
     pet.adotado = true;
     await this.petRepository.save(pet);
-    return { success: true };
   }
 
   async buscaPetPorCampoGenerico<Tipo extends keyof PetEntity>(
