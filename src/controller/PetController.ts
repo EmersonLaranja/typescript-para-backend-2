@@ -14,10 +14,7 @@ export default class PetController {
     req: Request<TipoRequestParamsPet, {}, TipoRequestBodyPet>,
     res: Response<TipoResponseBodyPet>
   ) {
-    const { adotado, especie, dataDeNascimento, nome, porte } = <PetEntity>(
-      req.body
-    );
-
+    const { adotado, especie, dataDeNascimento, nome, porte } = req.body;
     const novoPet = new PetEntity(
       nome,
       especie,
