@@ -44,7 +44,7 @@ export default class AbrigoEntity {
     celular: string,
     email: string,
     senha: string,
-    endereco: EnderecoEntity
+    endereco?: EnderecoEntity
   ) {
     this.nome = nome;
     this.celular = celular;
