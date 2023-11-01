@@ -2,8 +2,8 @@ import express, { RequestHandler } from "express";
 import { AppDataSource } from "../config/dataSource";
 import AdotanteController from "../controller/AdotanteController";
 import AdotanteRepository from "../repositories/AdotanteRepository";
-import { adotanteBodyValidatorMiddleware } from "../middleware/validators/adotanteRequestBody";
-import { enderecoBodyValidatorMiddleware } from "../middleware/validators/enderecoRequestBody";
+import { middlewareValidadorBodyAdotante } from "../middleware/validadores/adotanteRequestBody";
+import { middlewareValidadorBodyEndereco } from "../middleware/validadores/enderecoRequestBody";
 import verificaIdMiddleware from "../middleware/verificaId";
 const router = express.Router();
 const adotanteRepository = new AdotanteRepository(
@@ -12,10 +12,10 @@ const adotanteRepository = new AdotanteRepository(
 const adotanteController = new AdotanteController(adotanteRepository);
 
 const validateAdotanteBody: RequestHandler = (req, res, next) =>
-  adotanteBodyValidatorMiddleware(req, res, next);
+  middlewareValidadorBodyAdotante(req, res, next);
 
 const validateEnderecoBody: RequestHandler = (req, res, next) =>
-  enderecoBodyValidatorMiddleware(req, res, next);
+  middlewareValidadorBodyEndereco(req, res, next);
 
 router.post("/", validateAdotanteBody, (req, res) =>
   adotanteController.criaAdotante(req, res)

@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { TipoRequestBodyAbrigo } from "../../tipos/tiposAbrigo";
 import * as yup from "yup";
 import { pt } from "yup-locale-pt";
-import crypto from "crypto";
 import AbrigoEntity from "../../entities/AbrigoEntity";
+import { TipoRequestBodyAbrigo } from "../../tipos/tiposAbrigo";
 import tratarErroValidacaoYup from "../../utils/trataValidacaoYup";
 
 yup.setLocale(pt);
-const abrigoBodyValidator: yup.ObjectSchema<
+const esquemaBodyAbrigo: yup.ObjectSchema<
   Omit<TipoRequestBodyAbrigo, "endereco">
 > = yup.object({
   nome: yup.string().defined().required(),
@@ -30,10 +29,10 @@ const abrigoBodyValidator: yup.ObjectSchema<
     ),
 });
 
-export const abrigoBodyValidatorMiddleware = async (
+export const middlewareValidadorBodyAbrigo = async (
   req: Request<{}, {}, Partial<AbrigoEntity>>,
   res: Response,
   next: NextFunction
 ) => {
-  tratarErroValidacaoYup(abrigoBodyValidator, req, res, next);
+  tratarErroValidacaoYup(esquemaBodyAbrigo, req, res, next);
 };

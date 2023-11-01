@@ -8,7 +8,7 @@ import { TipoRequestBodyPet } from "../../tipos/tiposPet";
 import tratarErroValidacaoYup from "../../utils/trataValidacaoYup";
 yup.setLocale(pt);
 
-const petBodyValidator: yup.ObjectSchema<
+const esquemaBodyPet: yup.ObjectSchema<
   Omit<TipoRequestBodyPet, "adotante" | "abrigo">
 > = yup.object({
   nome: yup.string().defined().required(),
@@ -18,10 +18,10 @@ const petBodyValidator: yup.ObjectSchema<
   adotado: yup.boolean().defined().required(),
 });
 
-export const petBodyValidatorMiddleware = async (
+export const middlewareValidadorBodyPet = async (
   req: Request<{}, {}, Partial<PetEntity>>,
   res: Response,
   next: NextFunction
 ) => {
-  tratarErroValidacaoYup(petBodyValidator, req, res, next);
+  tratarErroValidacaoYup(esquemaBodyPet, req, res, next);
 };

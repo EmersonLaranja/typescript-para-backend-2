@@ -7,7 +7,7 @@ import AdotanteEntity from "../../entities/AdotanteEntity";
 import tratarErroValidacaoYup from "../../utils/trataValidacaoYup";
 
 yup.setLocale(pt);
-const adotanteBodyValidator: yup.ObjectSchema<
+const esquemaBodyAdotante: yup.ObjectSchema<
   Omit<TipoRequestBodyAdotante, "endereco">
 > = yup.object({
   nome: yup.string().defined().required(),
@@ -30,10 +30,10 @@ const adotanteBodyValidator: yup.ObjectSchema<
     ),
 });
 
-export const adotanteBodyValidatorMiddleware = async (
+export const middlewareValidadorBodyAdotante = async (
   req: Request<{}, {}, Partial<AdotanteEntity>>,
   res: Response,
   next: NextFunction
 ) => {
-  tratarErroValidacaoYup(adotanteBodyValidator, req, res, next);
+  tratarErroValidacaoYup(esquemaBodyAdotante, req, res, next);
 };

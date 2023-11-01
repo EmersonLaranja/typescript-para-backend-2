@@ -2,9 +2,9 @@ import express, { RequestHandler } from "express";
 import { AppDataSource } from "../config/dataSource";
 import AbrigoController from "../controller/AbrigoController";
 import AbrigoRepository from "../repositories/AbrigoRepository";
-import { enderecoBodyValidatorMiddleware } from "../middleware/validators/enderecoRequestBody";
+import { middlewareValidadorBodyEndereco } from "../middleware/validadores/enderecoRequestBody";
 import verificaIdMiddleware from "../middleware/verificaId";
-import { abrigoBodyValidatorMiddleware } from "../middleware/validators/abrigoRequestBody";
+import { middlewareValidadorBodyAbrigo } from "../middleware/validadores/abrigoRequestBody";
 const router = express.Router();
 const abrigoRepository = new AbrigoRepository(
   AppDataSource.getRepository("AbrigoEntity")
@@ -12,10 +12,10 @@ const abrigoRepository = new AbrigoRepository(
 const abrigoController = new AbrigoController(abrigoRepository);
 
 const validateAbrigoBody: RequestHandler = (req, res, next) =>
-  abrigoBodyValidatorMiddleware(req, res, next);
+  middlewareValidadorBodyAbrigo(req, res, next);
 
 const validateEnderecoBody: RequestHandler = (req, res, next) =>
-  enderecoBodyValidatorMiddleware(req, res, next);
+  middlewareValidadorBodyEndereco(req, res, next);
 
 router.post("/", validateAbrigoBody, (req, res) =>
   abrigoController.criaAbrigo(req, res)
