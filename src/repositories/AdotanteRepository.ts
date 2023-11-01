@@ -12,12 +12,16 @@ export default class AdotanteRepository implements InterfaceAdotanteRepository {
   }
 
   async criaAdotante(adotante: AdotanteEntity): Promise<void> {
-    if (await this.existeAdotanteComCelular(adotante.celular)) {
+    const adotanteExistente = await this.existeAdotanteComCelular(
+      adotante.celular
+    );
+
+    if (adotanteExistente) {
       throw new RequisicaoRuim("Já existe um adotante com esse celular!");
     }
+
     await this.repository.save(adotante);
   }
-
   async listaAdotantes(): Promise<AdotanteEntity[]> {
     return await this.repository.find();
   }
