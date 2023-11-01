@@ -7,14 +7,26 @@ import { NaoEncontrado, RequisicaoRuim } from "../utils/manipulaErros";
 export default class AbrigoRepository implements InterfaceAbrigoRepository {
   constructor(private repository: Repository<AbrigoEntity>) {}
 
-  private existeAbrigoComCelular(celular: string): boolean {
-    return !!this.repository.findOne({ where: { celular } });
+  private async existeAbrigoComCelular(celular: string) {
+    return await this.repository.findOne({ where: { celular } });
+  }
+
+  private async existeAbrigoComEmail(email: string) {
+    return await this.repository.findOne({ where: { email } });
   }
 
   async criaAbrigo(abrigo: AbrigoEntity): Promise<void> {
-    if (this.existeAbrigoComCelular(abrigo.celular)) {
-      throw new RequisicaoRuim("Já existe um abrigo com esse celular!");
+    const [abrigoComCelular, abrigoComEmail] = await Promise.all([
+      this.existeAbrigoComCelular(abrigo.celular),
+      this.existeAbrigoComEmail(abrigo.email),
+    ]);
+
+    if (abrigoComCelular || abrigoComEmail) {
+      throw new RequisicaoRuim(
+        "Já existe um abrigo com esse celular ou email!"
+      );
     }
+
     await this.repository.save(abrigo);
   }
 

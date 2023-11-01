@@ -24,7 +24,7 @@ export default class AbrigoEntity {
   nome: string;
   @Column({ unique: true })
   email: string;
-  @Column({ unique: true })
+  @Column()
   celular: string;
   @Column()
   senha: string;

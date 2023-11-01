@@ -16,7 +16,7 @@ export default class AbrigoController {
     res: Response<TipoResponseBodyAbrigo>
   ) {
     const { celular, email, nome, senha, endereco } = req.body;
-    const novoAbrigo = new AbrigoEntity(celular, email, nome, senha, endereco);
+    const novoAbrigo = new AbrigoEntity(nome, celular, email, senha, endereco);
 
     await this.repository.criaAbrigo(novoAbrigo);
     return res

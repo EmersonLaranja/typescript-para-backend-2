@@ -2,9 +2,9 @@ import express, { RequestHandler } from "express";
 import { AppDataSource } from "../config/dataSource";
 import AbrigoController from "../controller/AbrigoController";
 import AbrigoRepository from "../repositories/AbrigoRepository";
-import { abrigoBodyValidatorMiddleware } from "../middleware/validators/abrigoRequestBody";
 import { enderecoBodyValidatorMiddleware } from "../middleware/validators/enderecoRequestBody";
 import verificaIdMiddleware from "../middleware/verificaId";
+import { abrigoBodyValidatorMiddleware } from "../middleware/validators/abrigoRequestBody";
 const router = express.Router();
 const abrigoRepository = new AbrigoRepository(
   AppDataSource.getRepository("AbrigoEntity")
