@@ -11,6 +11,8 @@ export const erroMiddleware = (
   const statusCode =
     error.statusCode ?? EnumHttpStatusCode.INTERNAL_SERVER_ERROR;
 
-  const mensagem = error.statusCode ?? "Erro interno do servidor";
+  const mensagem = error.statusCode
+    ? error.message
+    : "Erro interno do servidor";
   res.status(statusCode).json({ mensagem });
 };
