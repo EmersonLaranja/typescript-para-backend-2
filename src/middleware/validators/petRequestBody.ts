@@ -7,18 +7,15 @@ import EnumPorte from "../../enum/EnumPorte";
 import { TipoRequestBodyPet } from "../../tipos/tiposPet";
 yup.setLocale(pt);
 
-const petBodyValidator: yup.ObjectSchema<Omit<TipoRequestBodyPet, "adotante">> =
-  yup.object({
-    nome: yup.string().defined().required(),
-    porte: yup.string().oneOf(Object.values(EnumPorte)).optional(),
-    especie: yup
-      .string()
-      .oneOf(Object.values(EnumEspecie))
-      .required()
-      .defined(),
-    dataDeNascimento: yup.date().defined().required(),
-    adotado: yup.boolean().defined().required(),
-  });
+const petBodyValidator: yup.ObjectSchema<
+  Omit<TipoRequestBodyPet, "adotante"| "abrigo">
+> = yup.object({
+  nome: yup.string().defined().required(),
+  porte: yup.string().oneOf(Object.values(EnumPorte)).optional(),
+  especie: yup.string().oneOf(Object.values(EnumEspecie)).required().defined(),
+  dataDeNascimento: yup.date().defined().required(),
+  adotado: yup.boolean().defined().required(),
+});
 
 export const petBodyValidatorMiddleware = async (
   req: Request<{}, {}, Partial<PetEntity>>,
